@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>dorabells calculator</title>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Fredoka+One&display=swap');
+
+    body {
+        background: #ffdce8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        font-family: 'Nunito', sans-serif;
+    }
+
+    .calculator {
+        width: 330px;
+        background: #ffffff;
+        border-radius: 40px;
+        padding: 25px;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.15),
+                    0 0 25px rgba(255,150,180,0.5);
+        border: 6px solid #ffc8df;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .display {
+        width: 100%;
+        height: 80px;
+        border: none;
+        background: #fefce8;
+        box-shadow: inset 0 0 12px rgba(0,0,0,0.15),
+                    inset 0 0 10px rgba(255,150,180,0.4);
+        border-radius: 20px;
+        font-size: 38px;
+        font-family: 'Fredoka One', cursive;
+        text-align: right;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        width: 100%;
+    }
+
+    button {
+        height: 65px;
+        border: none;
+        border-radius: 22px;
+        font-family: 'Fredoka One', cursive;
+        font-size: 22px;
+        cursor: pointer;
+        transition: transform 0.12s ease, box-shadow 0.15s ease;
+        background: linear-gradient(to bottom, #fafff5, #d7ffd1);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    button:active {
+        transform: scale(0.92);
+        box-shadow: none;
+    }
+
+    .num {
+        background: linear-gradient(to bottom, #ffeaf5, #ffcbe4);
+        box-shadow: 0 0 10px rgba(255,105,180,0.5);
+    }
+
+    .op {
+        background: linear-gradient(to bottom, #fff7d1, #ffeaa7);
+        box-shadow: 0 0 10px rgba(255,223,100,0.7);
+    }
+
+    .mem {
+        background: linear-gradient(to bottom, #d6ffeb, #baffd7);
+        box-shadow: 0 0 10px rgba(132,255,160,0.6);
+    }
+
+    @media(max-width: 400px) {
+        .calculator {
+            width: 92%;
+            padding: 20px;
+        }
+        button {
+            height: 58px;
+            font-size: 20px;
+        }
+        .display {
+            font-size: 32px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="calculator">
+    <!-- DISPLAY BAR ON TOP -->
+    <input type="text" id="display" class="display" disabled>
+
+    <div class="buttons">
+        <!-- TOP ROW -->
+        <button class="op">%</button>
+        <button class="op" onclick="clearDisplay()">C/AC</button>
+        <button class="op">MU</button>
+        <div></div>
+
+        <!-- MEMORY ROW -->
+        <button class="mem">MC</button>
+        <button class="mem">MR</button>
+        <button class="mem">M-</button>
+        <button class="mem">M+</button>
+
+        <!-- NUMBER ROWS -->
+        <button class="num">7</button>
+        <button class="num">8</button>
+        <button class="num">9</button>
+        <button class="op">÷</button>
+
+        <button class="num">4</button>
+        <button class="num">5</button>
+        <button class="num">6</button>
+        <button class="op">×</button>
+
+        <button class="num">1</button>
+        <button class="num">2</button>
+        <button class="num">3</button>
+        <button class="op">-</button>
+
+        <button class="num">0</button>
+        <button class="num">00</button>
+        <button class="op">+</button>
+        <button class="op" onclick="calculate()">=</button>
+
+    </div>
+</div>
+
+<script>
+const display = document.getElementById("display");
+
+document.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", () => {
+        let value = btn.textContent;
+
+        if (value === "C/AC") return clearDisplay();
+        if (value === "=") return calculate();
+        if (value === "×") value = "*";
+        if (value === "÷") value = "/";
+        if (["MC","MR","M+","M-"].includes(value)) return;
+
+        if (value === "%") {
+            applyPercentage();
+            return;
+        }
+
+        display.value += value;
+    });
+});
+
+function clearDisplay() {
+    display.value = "";
+}
+
+function calculate() {
+    try {
+        display.value = eval(display.value);
+    } catch {
+        display.value = "Error";
+    }
+}
+
+function applyPercentage() {
+    try {
+        let current = eval(display.value);
+        display.value = current / 100;
+    } catch {
+        display.value = "Error";
+    }
+}
+</script>
+
+</body>
+</html>
+dorabells.calculator
